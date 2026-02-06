@@ -1,19 +1,20 @@
 import { Card, CardBody, CardText, CardTitle } from 'react-bootstrap'
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Project({project}) {
   return (
     <Card className='my-3 p-3 rounded'>
-      <a href={`/project/${project._id}`}>
+      <Link to={`/project/${project._id}`}>
 
-      </a>
+      </Link>
 
       <CardBody>
-        <a href={`/project/${project._id}`}>
+        <Link to={`/project/${project._id}`}>
           <CardTitle as = "div">
             <strong>{project.project_name}</strong>
           </CardTitle>
-        </a>
+        </Link>
 
         <CardText as = "h7">
           {project.project_description}
