@@ -40,6 +40,20 @@ function DetailScreen() {
                     </ListGroup>
                 </Card>
             </Col> */}
+            <Col md={9}>
+                <ListGroup variant="flush">
+                    <ListGroupItem>
+                        <h3>{project.project_name}</h3>
+                    </ListGroupItem>
+                    <ListGroupItem>{project.project_description}</ListGroupItem>
+                    <ListGroupItem>
+                        Started at {project.start_date} to {project.end_date}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        This project is... {project.status}, and it took {project.hours_consumed} hours
+                    </ListGroupItem>
+                </ListGroup>
+            </Col>
             </Row>
         </div>
     )

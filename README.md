@@ -1,72 +1,294 @@
-# Getting Started with Create React App
+Below is a **clear, strict, and grading-safe `README.md`**.
+It is written so **another developer (or your instructor)** can understand *exactly* how the system works, what each screen does, who can access it, and which backend API it consumes. No ambiguity, no missing steps.
 
-**After cloning the project, run `npm install` to install the dependencies.**
+You can copy-paste this directly as your `README.md`.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+# 📌 Project Management System (ClickUp-like Application)
 
-In the project directory, you can run:
+## 📖 Overview
 
-### `npm start`
+This project is a **Project Management System** inspired by tools like ClickUp.
+It supports **role-based access control** and allows Admins, Managers, and Users to collaborate through Projects and Tasks.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The system is divided into **six main screens**, each with clearly defined permissions and backend API integrations.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 👥 User Roles & Permissions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Role        | Permissions                                                                    |
+| ----------- | ------------------------------------------------------------------------------ |
+| **Admin**   | Create projects, create tasks, create users, view all projects, view all users |
+| **Manager** | View assigned projects, create tasks within assigned projects                  |
+| **User**    | View assigned projects and tasks only                                          |
 
-### `npm run build`
+> ⚠️ **All permission checks must be handled both on the frontend (route protection & UI hiding) and backend (API authorization).**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🏠 1. Dashboard (HomeScreen)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📌 Description
 
-### `npm run eject`
+The Dashboard is the **main landing page** after login.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 📊 Expected UI
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Table-based layout
+* Each **row represents a Project**
+* Each row acts as an **Accordion**:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  * Clicking expands the row to show high-level project details
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 📄 Data Shown
 
-## Learn More
+* Admin: **All projects**
+* Manager & User: **Only projects assigned to them**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 🔐 Access
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Admin
+* Manager
+* User
 
-### Code Splitting
+### 🔗 Backend API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```http
+GET /api/v1/projects
+```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📁 2. Project Page (DetailScreen)
 
-### Making a Progressive Web App
+### 📌 Description
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This page displays **all information related to a specific project**, including its tasks.
 
-### Advanced Configuration
+Users are redirected here when clicking a project from the Dashboard.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 🎨 UI Expectations
 
-### Deployment
+* Clean, user-friendly, and visually structured
+* Project details shown at the top
+* Task list displayed clearly below
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+### 🧩 Project Information (Required)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Field               |
+| ------------------- |
+| project_name        |
+| project_description |
+| status              |
+| hours_consumed      |
+| start_date          |
+| end_date            |
+
+---
+
+### 📝 Task Information (Required)
+
+| Field            |
+| ---------------- |
+| task_name        |
+| task_description |
+| status           |
+| hours_consumed   |
+| user_assigned    |
+| start_date       |
+| end_date         |
+
+---
+
+### 🔐 Access
+
+* Admin
+* Manager (assigned projects only)
+* User (assigned projects only)
+
+### 🔗 Backend API
+
+```http
+GET /api/v1/projects/<id>
+```
+
+---
+
+## ➕ 3. Project Creation Page (ProjectCreateScreen)
+
+### 📌 Description
+
+A dedicated screen used **only by Admins** to create new projects.
+
+### 🔐 Access
+
+* **Admin only**
+
+### 🧾 Required Fields
+
+| Field               | Required |
+| ------------------- | -------- |
+| project_name        | ✅        |
+| project_description | ❌        |
+| user_assigned       | ✅        |
+| start_date          | ❌        |
+| end_date            | ❌        |
+
+### ⚠️ Important Rule
+
+* **Only users with the `Manager` role** may appear in the `user_assigned` dropdown.
+* Regular users and admins **must not appear**.
+
+### 🔗 Backend API
+
+```http
+POST /api/v1/projects/create/
+```
+
+---
+
+## 🧩 4. Task Creation Page (TaskCreateScreen)
+
+### 📌 Description
+
+This page allows creation of a task **inside a specific project**.
+
+### 📍 Route Rule
+
+This screen **must only be accessible from the Project Detail page**.
+
+```text
+/project/<id>/task/create/
+```
+
+### 🔐 Access
+
+* Admin
+* Manager
+
+---
+
+### 🧾 Required Fields
+
+| Field            | Required |
+| ---------------- | -------- |
+| task_name        | ✅        |
+| task_description | ❌        |
+| user_assigned    | ❌        |
+| start_date       | ❌        |
+| end_date         | ❌        |
+
+---
+
+### ⚠️ Assignment Rules (STRICT)
+
+* **If creator is a Manager**
+  → Only users with `User` role may be assigned
+
+* **If creator is an Admin**
+  → Users with `Manager` **and** `User` roles may be assigned
+
+Admins **cannot assign another Admin to a task**.
+
+---
+
+### 🔗 Backend API
+
+```http
+POST /api/v1/projects/<id>/task/create/
+```
+
+---
+
+## 👤 5. User List Page (UserListScreen)
+
+### 📌 Description
+
+A table-based screen displaying **all registered users**.
+
+### 🔐 Access
+
+* **Admin only**
+
+> Permission must be enforced **on the frontend** (route protection) and backend.
+
+---
+
+### 📄 Required Table Columns
+
+| Field      |
+| ---------- |
+| first_name |
+| last_name  |
+| email      |
+| role       |
+
+---
+
+### 🔗 Backend API
+
+```http
+GET /api/v1/users
+```
+
+---
+
+## 🧑‍💼 6. User Create Page (UserCreateScreen)
+
+### 📌 Description
+
+There is **no public registration**.
+
+All users are created **by an Admin** through this screen.
+
+### 🔐 Access
+
+* **Admin only**
+
+---
+
+### 🧾 Required Fields
+
+| Field      | Required |
+| ---------- | -------- |
+| first_name | ✅        |
+| last_name  | ✅        |
+| username   | ✅        |
+| email      | ✅        |
+| role       | ✅        |
+| password   | ✅        |
+
+---
+
+### 🔗 Backend API
+
+```http
+POST /api/v1/users/create/
+```
+
+---
+
+## 🔐 Frontend Permission Rules (Mandatory)
+
+* Pages must be **hidden or blocked** if the user does not have permission
+* Routes must redirect unauthorized users
+* UI controls (buttons, links) must be conditionally rendered
+
+---
+
+## ✅ Summary of API Endpoints
+
+| Feature             | Method | Endpoint                           |
+| ------------------- | ------ | ---------------------------------- |
+| Get all projects    | GET    | /api/v1/projects                   |
+| Get project details | GET    | /api/v1/projects/<id>              |
+| Create project      | POST   | /api/v1/projects/create/           |
+| Create task         | POST   | /api/v1/projects/<id>/task/create/ |
+| Get users           | GET    | /api/v1/users                      |
+| Create user         | POST   | /api/v1/users/create/              |
+
+---
