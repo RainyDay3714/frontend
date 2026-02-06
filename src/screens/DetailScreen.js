@@ -27,30 +27,23 @@ function DetailScreen() {
                     </ListGroupItem>
                 </ListGroup>
             </Col>
-            {/* <Col md={3}>
-                <Card>
-                    <ListGroup variant="flush">
-                        <ListGroupItem>
-                            <Row>
-                                <Col>
-                                    <strong>This project is... {project.status}, and it took {project.hours_consumed}hours</strong>
-                                </Col>
-                            </Row>
-                        </ListGroupItem>
-                    </ListGroup>
-                </Card>
-            </Col> */}
             <Col md={9}>
                 <ListGroup variant="flush">
                     <ListGroupItem>
-                        <h3>{project.project_name}</h3>
+                        <h3>{project.task_name}</h3>
                     </ListGroupItem>
-                    <ListGroupItem>{project.project_description}</ListGroupItem>
+                    <ListGroupItem>{project.task_description}</ListGroupItem>
                     <ListGroupItem>
-                        Started at {project.start_date} to {project.end_date}
+                        Date: s{project.task_start_date} from {project.task_end_date}
                     </ListGroupItem>
                     <ListGroupItem>
-                        This project is... {project.status}, and it took {project.hours_consumed} hours
+                        Current Status: {project.task_status}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        Hours: {project.task_hours_consumed}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        User assigned: {project.user_assigned}
                     </ListGroupItem>
                 </ListGroup>
             </Col>
